@@ -1,0 +1,22 @@
+{
+  "name": "KeyFig",
+  "productName": "KeyFig",
+  "version": "1.0.0",
+  "description": "Keyboard encoder programmer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heidgera/photoBoard.git"
+  },
+  "keywords": [
+    "pictures"
+  ],
+  "author": "ajhg",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron-prebuilt": "^0.35.0"
+  }
+}
