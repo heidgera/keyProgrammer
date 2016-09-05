@@ -1,6 +1,6 @@
 'use strict';
 
-let pinMap = [3, 4, 5, 6, 8, 9, 10, 11, 12, 13];
+let pinMap = [3, 4, 5, 6, 8, 9, 10, 11, 12, 16];
 
 let nameMap = [];
 let keyMap = [];
