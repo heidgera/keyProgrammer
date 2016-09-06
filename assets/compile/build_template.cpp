@@ -52,8 +52,14 @@ public:
     } else if(repeat && db>millis() && state && pressed){
       TrinketKeyboard.pressKey(0, 0);
     }*/
-    if(state) TrinketKeyboard.pressKey(mod, keyVal);
-    else TrinketKeyboard.pressKey(0, 0);
+    if(state && !pressed){
+        pressed = true;
+        TrinketKeyboard.pressKey(mod, keyVal);
+    }
+    else {
+      pressed = false;
+      TrinketKeyboard.pressKey(0, 0);
+    }
     return state;
   }
 };
