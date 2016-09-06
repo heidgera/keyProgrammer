@@ -37,7 +37,8 @@ public:
   bool check(){
     state = !digitalRead(pin);
 
-    if(state && !pressed ){
+    /*if(state && !pressed ){
+      TrinketKeyboard.pressKey(mod, keyVal);
       pressed = true;
       db = millis()+100;
     } else if(!state && (db>millis() || !db)){
@@ -50,7 +51,9 @@ public:
       TrinketKeyboard.pressKey(mod, keyVal);
     } else if(repeat && db>millis() && state && pressed){
       TrinketKeyboard.pressKey(0, 0);
-    }
+    }*/
+    if(state) TrinketKeyboard.pressKey(mod, keyVal);
+    else TrinketKeyboard.pressKey(0, 0);
     return state;
   }
 };
