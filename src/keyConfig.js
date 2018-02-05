@@ -1,6 +1,7 @@
 'use strict';
 
-let pinMap = [3, 4, 5, 6, 8, 9, 10, 11, 12, 16];
+//let pinMap = [3, 4, 5, 6, 8, 9, 10, 11, 12, 16];
+let pinMap = [3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15];
 
 let nameMap = [];
 let keyMap = [];
@@ -223,6 +224,7 @@ var keySet = inheritFrom(HTMLElement, function() {
 
     _this.keyCode = 0;
     _this.repeat = 0;
+    _this.once = 0;
     _this.shift = 0;
     _this.control = 0;
 
@@ -238,6 +240,10 @@ var keySet = inheritFrom(HTMLElement, function() {
     rptTtl.textContent = 'Repeat:';
     var repeat = µ('+input', _this);
     repeat.type = 'checkbox';
+    var onceTtl = µ('+div', _this);
+    onceTtl.textContent = 'Once:';
+    var once = µ('+input', _this);
+    once.type = 'checkbox';
     var shftTtl = µ('+div', _this);
     shftTtl.textContent = 'Shift:';
     var shift = µ('+input', _this);
@@ -253,6 +259,10 @@ var keySet = inheritFrom(HTMLElement, function() {
 
     repeat.onclick = () => {
       _this.repeat = repeat.checked;
+    };
+
+    once.onclick = () => {
+      _this.once = once.checked;
     };
 
     shift.onclick = () => {
@@ -277,7 +287,7 @@ var keySet = inheritFrom(HTMLElement, function() {
         let mod = ((_this.shift) ? 2 : 0) + ((_this.control) ? 1 : 0);
         let ret = '\tkeys.addKey(' + pinMap[_this.input] + ',';
         ret += _this.keyCode + ',';
-        return ret + mod + ',' + ((_this.repeat) ? 1 : 0) + ');\n';
+        return ret + mod + ',' + ((_this.repeat) ? 1 : 0) + ',' + ((_this.once) ? 1 : 0) + ');\n';
       } else {
         return null;
       }
@@ -288,12 +298,14 @@ var keySet = inheritFrom(HTMLElement, function() {
       key.value = '';
       _this.keyCode = 0;
       _this.repeat = repeat.checked = false;
+      _this.once = once.checked = false;
       _this.control = control.checked = false;
       _this.shift = shift.checked = false;
     };
 
     _this.setFromObj = (obj) => {
       _this.repeat = repeat.checked = obj.repeat;
+      _this.once = once.checked = obj.once;
       _this.control = control.checked = obj.control;
       _this.shift = shift.checked = obj.shift;
       _this.keyCode = obj.keyCode;

@@ -7,7 +7,7 @@ exports.saveConfig = () => {
   require('electron').remote.dialog.showSaveDialog({
     title: 'Save Encoder Configuration',
     filters: [
-      { name: 'Custom File Type', extensions: ['kfg'] },
+      { name: 'Custom File Type', extensions: ['json'] },
     ], }, (file)=> {
       if (file) fs.writeFileSync(file, JSON.stringify(µ('#keyGroup')));
 
@@ -22,7 +22,7 @@ exports.openConfig = () => {
     buttonLabel: 'Load',
     properties: ['openFile'],
     filters: [
-      { name: 'Custom File Type', extensions: ['kfg'] },
+      { name: 'Custom File Type', extensions: ['json'] },
     ], }, (file)=> {
       //fs.writeFileSync(file, JSON.stringify(µ('#keyGroup')));
       if (file) {

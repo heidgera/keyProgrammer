@@ -13,6 +13,10 @@ exports.call = function(cmd) {
     return _this;
   };
 
+  _this.setArguments = (argarray) => {
+    args = argarray;
+  }
+
   _this.outHandler = (data)=> {
     console.log(`stdout: ${data}`);
   };

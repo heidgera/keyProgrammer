@@ -11,8 +11,12 @@ public:
   int keyVal;
   int mod;
   bool pressed;
+  bool held;
   bool repeat;
+  bool oneShot;
   unsigned long db;
+  unsigned long rptTmr;
+  unsigned long shotTmr;
   bool state;
   key(int p,int val){
     pin = p;
@@ -21,15 +25,19 @@ public:
     pressed=0;
     state=0;
     mod=0;
+    held =0;
   }
-  key(int p, int val, int m, bool rpt=0){
+  key(int p, int val, int m, bool rpt=0, bool once=0){
     pin = p;
+    pinMode(p,INPUT_PULLUP);
     keyVal = val;
     db=0;
     pressed=0;
+    held = 0;
     state=0;
     mod=m;
     repeat = rpt;
+    oneShot = once;
   }
   void addModifier(int m){
     mod=m;
@@ -52,13 +60,27 @@ public:
     } else if(repeat && db>millis() && state && pressed){
       TrinketKeyboard.pressKey(0, 0);
     }*/
-    if(state && !pressed){
+    if(state && !pressed && millis() > db){
         pressed = true;
-        TrinketKeyboard.pressKey(mod, keyVal);
+        held = true;
+        //TrinketKeyboard.pressKey(mod, keyVal);
+        db = millis()+20;
+        if(repeat) rptTmr = millis() + 100;
+        if(oneShot) shotTmr = millis()+50;
     }
-    else {
+    else if(pressed && ! state && millis() > db){
+      db = millis()+20;
       pressed = false;
-      TrinketKeyboard.pressKey(0, 0);
+      held = false;
+      //TrinketKeyboard.pressKey(0, 0);
+    } else if(pressed && millis() > shotTmr && oneShot){
+      held = false;
+      //TrinketKeyboard.pressKey(0, 0);
+    } else if(pressed && state && millis() > rptTmr && repeat){
+      //TrinketKeyboard.pressKey(0, 0);
+      //TrinketKeyboard.pressKey(mod, keyVal);
+      held = !held;
+      rptTmr = millis() + 100;
     }
     return state;
   }
@@ -66,20 +88,35 @@ public:
 
 class keyBoard {
 public:
-  key* keys[10];
+  key* keys[12];
   int numKeys;
   keyBoard(){
     numKeys=0;
   }
-  void addKey(int p, int val, int m=0, int rpt=0){
-    if(numKeys<10){
-      keys[numKeys] = new key(p,val,m,rpt);
+  void addKey(int p, int val, int m=0, int rpt=0,int once=0){
+    if(numKeys<12){
+      keys[numKeys] = new key(p,val,m,rpt,once);
       numKeys++;
     }
   }
   void checkKeys(){
+    int numPress = 0;
     for(int i=0; i<numKeys; i++){
-      keys[i]->check();
+      if(keys[i]->check()) numPress++;
+    }
+    if(numPress){
+      uint8_t presses[numPress];
+      int track = 0;
+      int mod = 0;
+      for(int i=0; i<numKeys; i++){
+        if(keys[i]->held){
+          presses[track++] = keys[i]->keyVal;
+          if(keys[i]->mod) mod = keys[i]->mod;
+        }
+      }
+      TrinketKeyboard.pressKeys(mod, presses, numPress);
+    } else {
+      TrinketKeyboard.pressKey(0, 0);
     }
   }
 };

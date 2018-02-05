@@ -16,7 +16,7 @@
   ],
   "author": "ajhg",
   "license": "CC0-1.0",
-  "devDependencies": {
-    "electron-prebuilt": "^0.35.0"
+  "dependencies": {
+    "electron": "^1.4.5"
   }
 }

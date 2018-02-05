@@ -38,25 +38,47 @@ let Cmplr = function() {
   _this.onError = () => {};
 
   let cmp = new Call(toolDir + 'avr-g++');
-  cmp.addArgument('-c')
-    .addArgument('-g')
-    .addArgument('-Os')
-    .addArgument('-w')
-    .addArgument('-fno-exceptions')
-    .addArgument('-ffunction-sections')
-    .addArgument('-fdata-sections')
-    .addArgument('-fno-threadsafe-statics')
-    .addArgument('-MMD')
-    .addArgument('-mmcu=atmega328p')
-    .addArgument('-DF_CPU=16000000L')
-    .addArgument('-DARDUINO=10605')
-    .addArgument('-DARDUINO_AVR_PROTRINKET5')
-    .addArgument('-DARDUINO_ARCH_AVR')
-    .addArgument('-I' + hwDir + 'arduino/avr/cores/arduino')
-    .addArgument('-I' + hwDir + 'arduino/avr/variants/eightanaloginputs')
-    .addArgument('-I' + rootDir + 'libraries/ProTrinketKeyboard')
-    .addArgument(rootDir + 'build/build.cpp') //TODO:: rename file here
-    .addArgument('-o' + rootDir + 'build/build.o');
+
+  // cmp.addArgument('-c')
+  //   .addArgument('-g')
+  //   .addArgument('-Os')
+  //   .addArgument('-w')
+  //   .addArgument('-fno-exceptions')
+  //   .addArgument('-ffunction-sections')
+  //   .addArgument('-fdata-sections')
+  //   .addArgument('-fno-threadsafe-statics')
+  //   .addArgument('-MMD')
+  //   .addArgument('-mmcu=atmega328p')
+  //   .addArgument('-DF_CPU=16000000L')
+  //   .addArgument('-DARDUINO=10605')
+  //   .addArgument('-DARDUINO_AVR_PROTRINKET5')
+  //   .addArgument('-DARDUINO_ARCH_AVR')
+  //   .addArgument('-I' + hwDir + 'arduino/avr/cores/arduino')
+  //   .addArgument('-I' + hwDir + 'arduino/avr/variants/eightanaloginputs')
+  //   .addArgument('-I' + rootDir + 'libraries/ProTrinketKeyboard')
+  //   .addArgument(rootDir + 'build/build.cpp') //TODO:: rename file here
+  //   .addArgument('-o' + rootDir + 'build/build.o');
+
+  cmp.setArguments([
+    '-c',
+    '-g',
+    '-Os', '-w',
+    '-fno-exceptions',
+    '-ffunction-sections',
+    '-fdata-sections',
+    '-fno-threadsafe-statics',
+    '-MMD',
+    '-mmcu=atmega328p',
+    '-DF_CPU=16000000L',
+    '-DARDUINO=10605',
+    '-DARDUINO_AVR_PROTRINKET5',
+    '-DARDUINO_ARCH_AVR',
+    '-I' + hwDir + 'arduino/avr/cores/arduino',
+    '-I' + hwDir + 'arduino/avr/variants/eightanaloginputs',
+    '-I' + rootDir + 'libraries/ProTrinketKeyboard',
+    rootDir + 'build/build.cpp', //TODO:: rename file here
+    '-o' + rootDir + 'build/build.o',
+  ]);
 
   let lnk = new Call(toolDir + 'avr-gcc');
   lnk.addArgument('-w')
@@ -127,7 +149,7 @@ let Cmplr = function() {
 
   upl.onClose = () => {
     console.log('upload done');
-    if(!_this.error) _this.onComplete();
+    if (!_this.error) _this.onComplete();
     uploading = false;
   };
 
